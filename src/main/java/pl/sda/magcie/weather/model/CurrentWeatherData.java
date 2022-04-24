@@ -1,4 +1,4 @@
-package pl.sda.magcie.model;
+package pl.sda.magcie.weather.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
