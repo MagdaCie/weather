@@ -7,6 +7,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Wind {
 
-    private final float speed;
+    private final double speed;
     private final int deg;
 }

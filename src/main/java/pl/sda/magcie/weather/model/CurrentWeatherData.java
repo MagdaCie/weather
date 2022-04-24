@@ -7,9 +7,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CurrentWeatherData {
 
-    private final Long temperature;
-    private final Long pressure;
-    private final Long humidity;
+    private final double temperature;
+    private final int pressure;
+    private final int humidity;
     private final Wind wind;
 
 }
