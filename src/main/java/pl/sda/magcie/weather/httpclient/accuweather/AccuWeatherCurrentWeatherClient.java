@@ -15,7 +15,7 @@ import java.util.Map;
 public class AccuWeatherCurrentWeatherClient implements CurrentWeatherClient {
 
     @Value("${app.accuweather.api-key}")
-    private String apiKey;
+    private String apiKeyAW;
 
     @Override
     public CurrentWeatherData fetchCurrentWeatherData(Location location) {
@@ -32,34 +32,46 @@ public class AccuWeatherCurrentWeatherClient implements CurrentWeatherClient {
 
         Wind wind = new Wind(weatherDTO.Wind.Speed.Metric.Value, weatherDTO.Wind.Direction.Degrees);
         return new CurrentWeatherData(
-                weatherDTO.Temperature.Metric.Value, weatherDTO.Pressure.Metric.Value, weatherDTO.RelativeHumidity, wind);
+                weatherDTO.Temperature.Metric.Value, (int) weatherDTO.Pressure.Metric.Value, weatherDTO.RelativeHumidity, wind);
 
 
     }
 
     private Map<String, String> createCurrentConditionsUriParams() {
         Map<String, String> uriParameters = new HashMap<>();
-        uriParameters.put("apiKeyAW", apiKey);
+        uriParameters.put("apiKeyAW", apiKeyAW);
         uriParameters.put("details", String.valueOf(true));
         return uriParameters;
     }
 
     private String getLocationKeyByGeoPosition(Location location) {
-        String url = "http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey={apiKeyAW}&q={lat},{lon}";
-        Map<String, String> uriParameters = createLocationUriParams(location);
-        RestTemplate restTemplate = new RestTemplate();
-        LocationDTO locationDTO = restTemplate.getForObject(url, LocationDTO.class, uriParameters);
+        LocationDTO locationDTO = getLocationDTO(location);
         if (locationDTO != null) {
             return locationDTO.Key;
         }
         return null;
     }
 
+    public String getLocationNameByGeoPosition(Location location) {
+        LocationDTO locationDTO = getLocationDTO(location);
+        if (locationDTO != null) {
+            return locationDTO.LocalizedName;
+        }
+        return null;
+    }
+
+    private LocationDTO getLocationDTO(Location location) {
+        String url = "http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey={apiKeyAW}&q={lat},{lon}";
+        Map<String, String> uriParameters = createLocationUriParams(location);
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject(url, LocationDTO.class, uriParameters);
+    }
+
     private Map<String, String> createLocationUriParams(Location location) {
         Map<String, String> uriParameters = new HashMap<>();
         uriParameters.put("lat", String.valueOf(location.getLatitude()));
         uriParameters.put("lon", String.valueOf(location.getLongitude()));
-        uriParameters.put("apiKeyAW", apiKey);
+        uriParameters.put("apiKeyAW", apiKeyAW);
         return uriParameters;
     }
 
