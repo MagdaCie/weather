@@ -40,7 +40,7 @@ public class CurrentWeatherService {
                 .mapToDouble(Wind::getSpeed).average();
         OptionalDouble averageWindDeg = results.stream()
                 .map(CurrentWeatherData::getWind)
-                .mapToDouble(Wind::getDeg).average();
+                .mapToDouble(Wind::getDegree).average();
         return new CurrentWeatherData(averageTemperature.orElse(0), averagePressure.orElse(0),
                 averageHumidity.orElse(0), new Wind(averageWindSpeed.orElse(0), averageWindDeg.orElse(0)));
     }

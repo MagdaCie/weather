@@ -1,9 +1,13 @@
 package pl.sda.magcie.weather.httpclient.weatherstack;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 class CurrentDTO {
     public double temperature;
-    public double wind_speed;
-    public int wind_degree;
+    @JsonProperty("wind_speed")
+    public double windSpeed;
+    @JsonProperty("wind_degree")
+    public int windDegree;
     public int pressure;
     public int humidity;
 

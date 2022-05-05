@@ -43,7 +43,7 @@ public class WeatherstackCurrentWeatherClient implements CurrentWeatherClient {
     }
 
     private CurrentWeatherData createCurrentWeatherData(WeatherDTO weatherDTO) {
-        Wind wind = new Wind(weatherDTO.current.wind_speed, weatherDTO.current.wind_degree);
+        Wind wind = new Wind(weatherDTO.current.windSpeed, weatherDTO.current.windDegree);
         return new CurrentWeatherData(
                 weatherDTO.current.temperature, weatherDTO.current.pressure, weatherDTO.current.humidity, wind);
     }

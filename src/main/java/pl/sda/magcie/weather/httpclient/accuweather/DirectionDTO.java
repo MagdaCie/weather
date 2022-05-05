@@ -1,5 +1,8 @@
 package pl.sda.magcie.weather.httpclient.accuweather;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 class DirectionDTO {
-    public int Degrees;
+    @JsonProperty("Degrees")
+    public int degree;
 }

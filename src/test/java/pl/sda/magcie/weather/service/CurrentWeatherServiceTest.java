@@ -25,7 +25,7 @@ class CurrentWeatherServiceTest {
         assertThat(currentWeather.getHumidity()).isEqualTo(1);
         assertThat(currentWeather.getTemperature()).isEqualTo(1);
         assertThat(currentWeather.getPressure()).isEqualTo(1);
-        assertThat(currentWeather.getWind().getDeg()).isEqualTo(1);
+        assertThat(currentWeather.getWind().getDegree()).isEqualTo(1);
         assertThat(currentWeather.getWind().getSpeed()).isEqualTo(1);
     }
 
@@ -40,7 +40,7 @@ class CurrentWeatherServiceTest {
         assertThat(currentWeather.getHumidity()).isEqualTo(3);
         assertThat(currentWeather.getTemperature()).isEqualTo(3);
         assertThat(currentWeather.getPressure()).isEqualTo(3);
-        assertThat(currentWeather.getWind().getDeg()).isEqualTo(3);
+        assertThat(currentWeather.getWind().getDegree()).isEqualTo(3);
         assertThat(currentWeather.getWind().getSpeed()).isEqualTo(3);
     }
     @Test
@@ -56,7 +56,7 @@ class CurrentWeatherServiceTest {
         assertThat(currentWeather.getHumidity()).isEqualTo(2);
         assertThat(currentWeather.getTemperature()).isEqualTo(2);
         assertThat(currentWeather.getPressure()).isEqualTo(2);
-        assertThat(currentWeather.getWind().getDeg()).isEqualTo(2);
+        assertThat(currentWeather.getWind().getDegree()).isEqualTo(2);
         assertThat(currentWeather.getWind().getSpeed()).isEqualTo(2);
     }
     private static class AlwaysOneCurrentWeatherClient implements CurrentWeatherClient {

@@ -30,9 +30,9 @@ public class AccuWeatherCurrentWeatherClient implements CurrentWeatherClient {
         }
         WeatherDTO weatherDTO = weatherDTOArray[0];
 
-        Wind wind = new Wind(weatherDTO.Wind.Speed.Metric.Value, weatherDTO.Wind.Direction.Degrees);
+        Wind wind = new Wind(weatherDTO.wind.speed.metric.value, weatherDTO.wind.direction.degree);
         return new CurrentWeatherData(
-                weatherDTO.Temperature.Metric.Value, (int) weatherDTO.Pressure.Metric.Value, weatherDTO.RelativeHumidity, wind);
+                weatherDTO.temperature.metric.value, (int) weatherDTO.pressure.metric.value, weatherDTO.RelativeHumidity, wind);
 
 
     }
@@ -47,7 +47,7 @@ public class AccuWeatherCurrentWeatherClient implements CurrentWeatherClient {
     private String getLocationKeyByGeoPosition(Location location) {
         LocationDTO locationDTO = getLocationDTO(location);
         if (locationDTO != null) {
-            return locationDTO.Key;
+            return locationDTO.key;
         }
         return null;
     }
@@ -55,7 +55,7 @@ public class AccuWeatherCurrentWeatherClient implements CurrentWeatherClient {
     public String getLocationNameByGeoPosition(Location location) {
         LocationDTO locationDTO = getLocationDTO(location);
         if (locationDTO != null) {
-            return locationDTO.LocalizedName;
+            return locationDTO.localizedName;
         }
         return null;
     }

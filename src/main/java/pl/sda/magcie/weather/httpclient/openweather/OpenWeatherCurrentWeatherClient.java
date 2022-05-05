@@ -33,9 +33,9 @@ public class OpenWeatherCurrentWeatherClient implements CurrentWeatherClient {
     }
 
     private CurrentWeatherData createCurrentWeatherData(WeatherDTO weatherDTO) {
-        Wind wind = new Wind(weatherDTO.wind.speed * secondsInHour / metersInKilometer, weatherDTO.wind.deg);
+        Wind wind = new Wind(weatherDTO.wind.speed * secondsInHour / metersInKilometer, weatherDTO.wind.degree);
         return new CurrentWeatherData(
-                weatherDTO.main.temp - 272.15, weatherDTO.main.pressure, weatherDTO.main.humidity, wind);
+                weatherDTO.main.temperature - 272.15, weatherDTO.main.pressure, weatherDTO.main.humidity, wind);
     }
 
     private Map<String, String> createUriParams(Location location) {

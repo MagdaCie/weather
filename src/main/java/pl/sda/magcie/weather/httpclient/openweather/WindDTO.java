@@ -1,7 +1,10 @@
 package pl.sda.magcie.weather.httpclient.openweather;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 class WindDTO {
 
     public double speed;
-    public int deg;
+    @JsonProperty("deg")
+    public int degree;
 }

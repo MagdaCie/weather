@@ -1,5 +1,8 @@
 package pl.sda.magcie.weather.httpclient.accuweather;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 class MetricDTO {
-    public double Value;
+    @JsonProperty("Value")
+    public double value;
 }

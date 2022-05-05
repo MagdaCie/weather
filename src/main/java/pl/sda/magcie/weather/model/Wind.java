@@ -8,5 +8,5 @@ import lombok.RequiredArgsConstructor;
 public class Wind {
 
     private final double speed;
-    private final double deg;
+    private final double degree;
 }

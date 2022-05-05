@@ -1,7 +1,10 @@
 package pl.sda.magcie.weather.httpclient.openweather;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 class MainDTO {
-    public double temp;
+    @JsonProperty("temp")
+    public double temperature;
     public int pressure;
     public int humidity;
 
