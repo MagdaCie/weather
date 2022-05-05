@@ -9,9 +9,9 @@ public class CurrentWeatherData {
     //celsius degrees
     private final double temperature;
     //hPa
-    private final int pressure;
+    private final double pressure;
     //%
-    private final int humidity;
+    private final double humidity;
     //km/h
     private final Wind wind;
 
