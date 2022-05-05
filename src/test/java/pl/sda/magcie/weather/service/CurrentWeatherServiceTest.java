@@ -1,24 +1,30 @@
 package pl.sda.magcie.weather.service;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import pl.sda.magcie.weather.httpclient.CurrentWeatherClient;
 import pl.sda.magcie.weather.model.CurrentWeatherData;
 import pl.sda.magcie.weather.model.Location;
 import pl.sda.magcie.weather.model.Wind;
+import pl.sda.magcie.weather.repository.WeatherDataRepository;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.then;
 
 class CurrentWeatherServiceTest {
+
+    private final WeatherDataRepository repository = Mockito.mock(WeatherDataRepository.class);
 
     @Test
     void getCurrentWeather_singleAlwaysOneClient() {
         //given
         Set<CurrentWeatherClient> clients = Collections.singleton(new AlwaysOneCurrentWeatherClient());
-        CurrentWeatherService currentWeatherService = new CurrentWeatherService(clients);
+        CurrentWeatherService currentWeatherService = new CurrentWeatherService(clients, repository);
         //when
         CurrentWeatherData currentWeather = currentWeatherService.getCurrentWeather(1, 1);
         //then
@@ -33,7 +39,7 @@ class CurrentWeatherServiceTest {
     void getCurrentWeather_singleAlwaysThreeClient() {
         //given
         Set<CurrentWeatherClient> clients = Collections.singleton(new AlwaysThreeCurrentWeatherClient());
-        CurrentWeatherService currentWeatherService = new CurrentWeatherService(clients);
+        CurrentWeatherService currentWeatherService = new CurrentWeatherService(clients, repository);
         //when
         CurrentWeatherData currentWeather = currentWeatherService.getCurrentWeather(1, 1);
         //then
@@ -49,7 +55,7 @@ class CurrentWeatherServiceTest {
         Set<CurrentWeatherClient> clients = new HashSet<>();
         clients.add(new AlwaysOneCurrentWeatherClient());
         clients.add(new AlwaysThreeCurrentWeatherClient());
-        CurrentWeatherService currentWeatherService = new CurrentWeatherService(clients);
+        CurrentWeatherService currentWeatherService = new CurrentWeatherService(clients, repository);
         //when
         CurrentWeatherData currentWeather = currentWeatherService.getCurrentWeather(1, 1);
         //then
@@ -59,6 +65,19 @@ class CurrentWeatherServiceTest {
         assertThat(currentWeather.getWind().getDegree()).isEqualTo(2);
         assertThat(currentWeather.getWind().getSpeed()).isEqualTo(2);
     }
+
+    @Test
+    void getCurrentWeather_shouldSaveEntity() {
+        //given
+        Set<CurrentWeatherClient> clients = new HashSet<>();
+        clients.add(new AlwaysOneCurrentWeatherClient());
+        CurrentWeatherService currentWeatherService = new CurrentWeatherService(clients, repository);
+        //when
+        currentWeatherService.getCurrentWeather(1, 1);
+        //then
+        then(repository).should().saveAndFlush(any());
+    }
+
     private static class AlwaysOneCurrentWeatherClient implements CurrentWeatherClient {
         @Override
         public CurrentWeatherData fetchCurrentWeatherData(Location location) {

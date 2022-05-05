@@ -6,8 +6,11 @@ import pl.sda.magcie.weather.httpclient.CurrentWeatherClient;
 import pl.sda.magcie.weather.model.CurrentWeatherData;
 import pl.sda.magcie.weather.model.Location;
 import pl.sda.magcie.weather.model.Wind;
+import pl.sda.magcie.weather.repository.WeatherDataEntity;
+import pl.sda.magcie.weather.repository.WeatherDataRepository;
 
-import java.util.OptionalDouble;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,10 +18,12 @@ import java.util.stream.Collectors;
 public class CurrentWeatherService {
 
     private final Set<CurrentWeatherClient> clients;
+    private final WeatherDataRepository repository;
 
     @Autowired
-    public CurrentWeatherService(Set<CurrentWeatherClient> clients) {
+    public CurrentWeatherService(Set<CurrentWeatherClient> clients, WeatherDataRepository repository) {
         this.clients = clients;
+        this.repository = repository;
     }
 
     public CurrentWeatherData getCurrentWeather(double lat, double lon) {
@@ -26,23 +31,39 @@ public class CurrentWeatherService {
         Set<CurrentWeatherData> results = clients.stream()
                 .map(client -> client.fetchCurrentWeatherData(location))
                 .collect(Collectors.toSet());
-        OptionalDouble averageTemperature = results.stream()
+        double averageTemperature = results.stream()
                 .mapToDouble(CurrentWeatherData::getTemperature)
-                .average();
-        OptionalDouble averagePressure = results.stream()
+                .average()
+                .orElse(0);
+        double averagePressure = results.stream()
                 .mapToDouble(CurrentWeatherData::getPressure)
-                .average();
-        OptionalDouble averageHumidity = results.stream()
+                .average()
+                .orElse(0);
+        double averageHumidity = results.stream()
                 .mapToDouble(CurrentWeatherData::getHumidity)
-                .average();
-        OptionalDouble averageWindSpeed = results.stream()
+                .average()
+                .orElse(0);
+        double averageWindSpeed = results.stream()
                 .map(CurrentWeatherData::getWind)
-                .mapToDouble(Wind::getSpeed).average();
-        OptionalDouble averageWindDeg = results.stream()
+                .mapToDouble(Wind::getSpeed)
+                .average()
+                .orElse(0);
+        double averageWindDegree = results.stream()
                 .map(CurrentWeatherData::getWind)
-                .mapToDouble(Wind::getDegree).average();
-        return new CurrentWeatherData(averageTemperature.orElse(0), averagePressure.orElse(0),
-                averageHumidity.orElse(0), new Wind(averageWindSpeed.orElse(0), averageWindDeg.orElse(0)));
+                .mapToDouble(Wind::getDegree)
+                .average()
+                .orElse(0);
+
+        repository.saveAndFlush(new WeatherDataEntity(
+                Timestamp.from(Instant.now()),
+                averageTemperature,
+                averagePressure,
+                averageHumidity,
+                averageWindSpeed,
+                averageWindDegree));
+
+        return new CurrentWeatherData(averageTemperature, averagePressure,
+                averageHumidity, new Wind(averageWindSpeed, averageWindDegree));
     }
 
 }
