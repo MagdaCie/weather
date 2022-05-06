@@ -1,6 +1,5 @@
 package pl.sda.magcie.weather.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.sda.magcie.weather.httpclient.CurrentWeatherClient;
 import pl.sda.magcie.weather.model.CurrentWeatherData;
@@ -19,7 +18,6 @@ public class CurrentWeatherService {
     private final Set<CurrentWeatherClient> clients;
     private final WeatherDataRepository repository;
 
-    @Autowired
     public CurrentWeatherService(Set<CurrentWeatherClient> clients, WeatherDataRepository repository) {
         this.clients = clients;
         this.repository = repository;

@@ -1,7 +1,6 @@
 package pl.sda.magcie.weather.service;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import pl.sda.magcie.weather.httpclient.CurrentWeatherClient;
 import pl.sda.magcie.weather.model.CurrentWeatherData;
 import pl.sda.magcie.weather.model.Wind;
@@ -14,10 +13,11 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mock;
 
 class CurrentWeatherServiceTest {
 
-    private final WeatherDataRepository repository = Mockito.mock(WeatherDataRepository.class);
+    private final WeatherDataRepository repository = mock(WeatherDataRepository.class);
 
     @Test
     void getCurrentWeather_singleAlwaysOneClient() {

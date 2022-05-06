@@ -1,6 +1,5 @@
 package pl.sda.magcie.weather.httpclient.weatherstack;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -21,11 +20,9 @@ public class WeatherstackCurrentWeatherClient implements CurrentWeatherClient {
 
     private final AccuWeatherCurrentWeatherClient accuWeatherCurrentWeatherClient;
 
-    @Autowired
     public WeatherstackCurrentWeatherClient(AccuWeatherCurrentWeatherClient accuWeatherCurrentWeatherClient) {
         this.accuWeatherCurrentWeatherClient = accuWeatherCurrentWeatherClient;
     }
-
 
     @Override
     public CurrentWeatherData fetchCurrentWeatherData(double lat, double lon) {
