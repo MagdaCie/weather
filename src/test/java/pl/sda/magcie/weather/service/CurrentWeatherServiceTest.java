@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import pl.sda.magcie.weather.httpclient.CurrentWeatherClient;
 import pl.sda.magcie.weather.model.CurrentWeatherData;
-import pl.sda.magcie.weather.model.Location;
 import pl.sda.magcie.weather.model.Wind;
 import pl.sda.magcie.weather.repository.WeatherDataRepository;
 
@@ -80,14 +79,14 @@ class CurrentWeatherServiceTest {
 
     private static class AlwaysOneCurrentWeatherClient implements CurrentWeatherClient {
         @Override
-        public CurrentWeatherData fetchCurrentWeatherData(Location location) {
+        public CurrentWeatherData fetchCurrentWeatherData(double lat, double lon) {
             return new CurrentWeatherData(1, 1, 1, new Wind(1, 1));
         }
     }
 
     private static class AlwaysThreeCurrentWeatherClient implements CurrentWeatherClient {
         @Override
-        public CurrentWeatherData fetchCurrentWeatherData(Location location) {
+        public CurrentWeatherData fetchCurrentWeatherData(double lat, double lon) {
             return new CurrentWeatherData(3, 3, 3, new Wind(3, 3));
         }
     }

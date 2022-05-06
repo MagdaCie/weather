@@ -19,7 +19,7 @@ public class CurrentWeatherController {
         this.currentWeatherService = currentWeatherService;
     }
 
-    @RequestMapping(path = "/weather", method = GET)
+    @RequestMapping(path = "/currentweather", method = GET)
     CurrentWeatherData getCurrentWeather(@RequestParam("lat") double lat, @RequestParam("lon") double lon) {
         return currentWeatherService.getCurrentWeather(lat, lon);
     }

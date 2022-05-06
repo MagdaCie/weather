@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.sda.magcie.weather.httpclient.CurrentWeatherClient;
 import pl.sda.magcie.weather.model.CurrentWeatherData;
-import pl.sda.magcie.weather.model.Location;
 import pl.sda.magcie.weather.model.Wind;
 import pl.sda.magcie.weather.repository.WeatherDataEntity;
 import pl.sda.magcie.weather.repository.WeatherDataRepository;
@@ -27,9 +26,8 @@ public class CurrentWeatherService {
     }
 
     public CurrentWeatherData getCurrentWeather(double lat, double lon) {
-        Location location = new Location(lat, lon);
         Set<CurrentWeatherData> results = clients.stream()
-                .map(client -> client.fetchCurrentWeatherData(location))
+                .map(client -> client.fetchCurrentWeatherData(lat, lon))
                 .collect(Collectors.toSet());
         double averageTemperature = results.stream()
                 .mapToDouble(CurrentWeatherData::getTemperature)

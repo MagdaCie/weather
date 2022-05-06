@@ -8,7 +8,6 @@ import pl.sda.magcie.weather.convert.PolishToEnglishLettersConverter;
 import pl.sda.magcie.weather.httpclient.CurrentWeatherClient;
 import pl.sda.magcie.weather.httpclient.accuweather.AccuWeatherCurrentWeatherClient;
 import pl.sda.magcie.weather.model.CurrentWeatherData;
-import pl.sda.magcie.weather.model.Location;
 import pl.sda.magcie.weather.model.Wind;
 
 import java.util.HashMap;
@@ -29,9 +28,9 @@ public class WeatherstackCurrentWeatherClient implements CurrentWeatherClient {
 
 
     @Override
-    public CurrentWeatherData fetchCurrentWeatherData(Location location) {
+    public CurrentWeatherData fetchCurrentWeatherData(double lat, double lon) {
         String url = "http://api.weatherstack.com/current?access_key={apiKeyWS}&query={locationName}";
-        String nonEnglishLettersLocation = accuWeatherCurrentWeatherClient.getLocationNameByGeoPosition(location);
+        String nonEnglishLettersLocation = accuWeatherCurrentWeatherClient.getLocationNameByGeoPosition(lat, lon);
         String locationName = PolishToEnglishLettersConverter.convert(nonEnglishLettersLocation);
         Map<String, String> uriParameters = createCurrentConditionsUriParams(locationName);
         RestTemplate restTemplate = new RestTemplate();
