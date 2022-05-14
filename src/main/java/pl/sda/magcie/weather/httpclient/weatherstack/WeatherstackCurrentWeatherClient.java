@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import pl.sda.magcie.weather.convert.PolishToEnglishLettersConverter;
 import pl.sda.magcie.weather.httpclient.CurrentWeatherClient;
-import pl.sda.magcie.weather.httpclient.accuweather.AccuWeatherCurrentWeatherClient;
+import pl.sda.magcie.weather.httpclient.LocationNameClient;
 import pl.sda.magcie.weather.model.CurrentWeatherData;
 import pl.sda.magcie.weather.model.Wind;
 
@@ -18,16 +18,16 @@ public class WeatherstackCurrentWeatherClient implements CurrentWeatherClient {
     @Value("${app.weatherstack.api-key}")
     private String apiKeyWS;
 
-    private final AccuWeatherCurrentWeatherClient accuWeatherCurrentWeatherClient;
+    private final LocationNameClient locationNameClient;
 
-    public WeatherstackCurrentWeatherClient(AccuWeatherCurrentWeatherClient accuWeatherCurrentWeatherClient) {
-        this.accuWeatherCurrentWeatherClient = accuWeatherCurrentWeatherClient;
+    public WeatherstackCurrentWeatherClient(LocationNameClient locationNameClient) {
+        this.locationNameClient = locationNameClient;
     }
 
     @Override
     public CurrentWeatherData fetchCurrentWeatherData(double lat, double lon) {
         String url = "http://api.weatherstack.com/current?access_key={apiKeyWS}&query={locationName}";
-        String nonEnglishLettersLocation = accuWeatherCurrentWeatherClient.getLocationNameByGeoPosition(lat, lon);
+        String nonEnglishLettersLocation = locationNameClient.getLocationNameByGeoPosition(lat, lon);
         String locationName = PolishToEnglishLettersConverter.convert(nonEnglishLettersLocation);
         Map<String, String> uriParameters = createCurrentConditionsUriParams(locationName);
         RestTemplate restTemplate = new RestTemplate();

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import pl.sda.magcie.weather.httpclient.CurrentWeatherClient;
+import pl.sda.magcie.weather.httpclient.LocationNameClient;
 import pl.sda.magcie.weather.model.CurrentWeatherData;
 import pl.sda.magcie.weather.model.Wind;
 
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class AccuWeatherCurrentWeatherClient implements CurrentWeatherClient {
+public class AccuWeatherCurrentWeatherClient implements CurrentWeatherClient, LocationNameClient {
 
     @Value("${app.accuweather.api-key}")
     private String apiKeyAW;
@@ -32,8 +33,15 @@ public class AccuWeatherCurrentWeatherClient implements CurrentWeatherClient {
         Wind wind = new Wind(weatherDTO.wind.speed.metric.value, weatherDTO.wind.direction.degree);
         return new CurrentWeatherData(
                 weatherDTO.temperature.metric.value, (int) weatherDTO.pressure.metric.value, weatherDTO.RelativeHumidity, wind);
+    }
 
-
+    @Override
+    public String getLocationNameByGeoPosition(double lat, double lon) {
+        LocationDTO locationDTO = getLocationDTO(lat, lon);
+        if (locationDTO != null) {
+            return locationDTO.localizedName;
+        }
+        return null;
     }
 
     private Map<String, String> createCurrentConditionsUriParams() {
@@ -47,14 +55,6 @@ public class AccuWeatherCurrentWeatherClient implements CurrentWeatherClient {
         LocationDTO locationDTO = getLocationDTO(lat, lon);
         if (locationDTO != null) {
             return locationDTO.key;
-        }
-        return null;
-    }
-
-    public String getLocationNameByGeoPosition(double lat, double lon) {
-        LocationDTO locationDTO = getLocationDTO(lat, lon);
-        if (locationDTO != null) {
-            return locationDTO.localizedName;
         }
         return null;
     }
